@@ -163,4 +163,19 @@ class SamlSso implements SamlContract
 
         $this->destination = $destination;
     }
+    private function getQueryParams()
+    {
+        $queryParams = config(sprintf(
+            'samlidp.sp.%s.query_params',
+            $this->getServiceProvider($this->authn_request)
+        ));
+
+        if (is_null($queryParams)) {
+            $queryParams = [
+                'idp' => config('app.url')
+            ];
+        }
+
+        return $queryParams;
+    }
 }
